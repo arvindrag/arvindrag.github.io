@@ -54,6 +54,7 @@ class ItemPromptModal {
       }
     };
   }
+  updateToItemExtras(){}
   updateItem() {
     if (this.itemUnderEdit !== null) {
       this.itemUnderEdit.content = this.text.value;
@@ -65,6 +66,7 @@ class ItemPromptModal {
       if ("end" in this.itemUnderEdit) {
         this.itemUnderEdit.end = Date.parse(this.itemUnderEdit.end.toString());
       }
+      this.updateToItemExtras()
       this.dataset.updateOnly(this.itemUnderEdit);
       this.itemUnderEdit = null;
       this.setModalColor();
@@ -88,25 +90,62 @@ class ItemPromptModal {
         e.classList.add(color);
       });
     }
-
-    console.log(this.color);
+  }
+  updateFromItem(item) {
+    this.text.value = item.content;
   }
   editItem(item) {
     this.itemUnderEdit = item;
+    this.updateFromItem(item)
     this.setModalColor();
-    this.text.value = item.content;
     this.modal.open();
     this.text.focus();
     this.text.select();
   }
 }
+class Card {
+  shuffle() {
+    this.draw(Math.floor(Math.random() * 22) + 1)
+  }
+  draw(num) {
+    this.num = num
+    this.elem.src = this.root + this.num + ".svg"
+  }
+  constructor(elem, num = 1) {
+    this.root = "./images/tarot/"
+    this.elem = elem
+    this.num = num
+    this.elem.addEventListener("click", () => {
+      this.shuffle()
+    });
+  }
+}
+
 class GroupPromptModal extends ItemPromptModal {
   constructor(id, dataset) {
     super(id, dataset);
+    this.card = new Card(ItemPromptModal.subElemById(this.element, id + "-svg"));
+    this.details = ItemPromptModal.subElemById(this.element, id + "-details");
     this.del = ItemPromptModal.subElemById(this.element, id + "-del");
     this.del.addEventListener("click", () => {
       this.dataset.remove(this.itemUnderEdit.id);
     });
+    this.details.onkeypress = (event) => {
+      const keyCode = event.keyCode;
+      if (keyCode === 13) {
+        this.updateItem();
+        this.modal.close();
+      }
+    };
+  }
+  updateFromItem(item) {
+    this.text.value = item.content;
+    this.details.value = item.details;
+    this.card.draw(item.card);
+  }
+  updateToItemExtras(item) {
+    this.itemUnderEdit.details = this.details.value;
+    this.itemUnderEdit.card = this.card.num;
   }
   getModalColor() {
     return lookupColorArray[this.itemUnderEdit.id - 1];
@@ -230,11 +269,13 @@ class TimelineWrapper {
       },
     });
     let groupdata = this.groups.get({
-      fields: ["id", "content", "order"], // output the specified fields only
+      fields: ["id", "content", "details", "card", "order"], // output the specified fields only
       type: {
         order: "int",
         id: "int", // convert the date fields to Date objects
         content: "String", // convert the group fields to Strings
+        details: "String",
+        card: "int"
       },
     });
     return {
@@ -255,7 +296,9 @@ class TimelineWrapper {
       id: newid,
       content: "person_" + newid,
       visible: true,
-      order: newindex
+      order: newindex,
+      card: 1,
+      details: "..."
     });
   }
   resetView() {
@@ -304,6 +347,14 @@ document.getElementById("edit-btn-clear").addEventListener("click", () => {
 document.getElementById("edit-btn-reset").addEventListener("click", () => {
   timelineWrapper.resetView();
 })
+document.getElementById("footer-btn-save").addEventListener("click", () => {
+  let data = timelineWrapper.saveData();
+  localStorage.setItem("itemdata", JSON.stringify(data.items));
+  localStorage.setItem("groupdata", JSON.stringify(data.groups));
+  M.toast({
+    html: "Data saved!"
+  });
+});
 document.getElementById("footer-btn-load").addEventListener("click", () => {
   let itemdata = JSON.parse(localStorage.getItem("itemdata")).filter(
     (d) => d.id !== null && d.start !== null

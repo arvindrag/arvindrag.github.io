@@ -36,11 +36,15 @@
         </div>
         <div id="group-prompt-modal" class="modal  lighten-2">
             <div class="modal-content white-text">
-                <h6><b>...</b></h6>
+                    <h6><b>...</b></h6>
                     <div class="input-field col s6 h4">
-                        <textarea id="group-prompt-modal-text" placeholder="???" class="materialize-textarea" data-length="200"></textarea>
+                        <div class="row">
+                            <img id="group-prompt-modal-svg" src="./images/tarot/1.svg" class = "col s3 left">
+                            <textarea id="group-prompt-modal-text" placeholder="???" class="col s4 left materialize-textarea" data-length="200"></textarea>
+                            <textarea id="group-prompt-modal-details" placeholder="???" class="col s6 left materialize-textarea" data-length="200"></textarea>
+                        </div>
                     </div>
-                </div>
+            </div>
             <div class="modal-footer">
                 <a id="group-prompt-modal-del" class="modal-close waves-effect waves-light btn"><i class="material-icons">delete</i></a>
                 <a id="group-prompt-modal-save" class="modal-close waves-effect waves-light btn">save</a>
