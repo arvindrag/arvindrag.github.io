@@ -42,8 +42,6 @@
                     </div>
                 </div>
             <div class="modal-footer">
-                <a id="group-prompt-modal-up" class="waves-effect waves-light btn left"><i class="material-icons">arrow_upward</i></a>
-                <a id="group-prompt-modal-down" class="waves-effect waves-light btn left"><i class="material-icons">arrow_downward</i></a>
                 <a id="group-prompt-modal-del" class="modal-close waves-effect waves-light btn"><i class="material-icons">delete</i></a>
                 <a id="group-prompt-modal-save" class="modal-close waves-effect waves-light btn">save</a>
                 <a id="group-prompt-modal-cancel" class="modal-close waves-effect waves-light btn">cancel</a>
@@ -51,18 +49,21 @@
         </div>
         <div class="spacer" height="100"></div>
         <div id="visualization"></div>
-        <a id="edit-btn-char" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">person_add</i></a>
-        <a id="edit-btn-zoom-in" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">zoom_in</i></a>
-        <a id="edit-btn-zoom-out" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">zoom_out</i></a>                
-        <a id="edit-btn-clear" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">delete</i></a>
+        <div id="buttons" class="row left">
+            <div class="col s3"><a id="edit-btn-char" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">person_add</i></a></div>
+            <div class="col s3"><a id="edit-btn-reset" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">cached</i></a></div>            
+            <div class="col s3"><a id="edit-btn-zoom-in" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">zoom_in</i></a></div>
+            <div class="col s3"><a id="edit-btn-zoom-out" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">zoom_out</i></a>                </div>
+            <div class="col s3"><a id="edit-btn-clear" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">delete</i></a></div>
+        </div>
     </main>
     <footer class="page-footer white"></footer>
-        <div class="row">
+        <div class="row left">
+            <a id="footer-btn-save" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">save</i></a>
+            <a id="footer-btn-load" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">input</i></a>
+            <a id="footer-btn-download" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">download_for_offline</i></a>
+            <a id="footer-btn-download" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">arrow_circle_left</i></a>        
         </div>
-        <a id="footer-btn-save" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">save</i></a>
-        <a id="footer-btn-load" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">input</i></a>
-        <a id="footer-btn-download" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">download_for_offline</i></a>
-        <a id="footer-btn-download" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">arrow_circle_left</i></a>        
     </div>
 </body>
 </html>
