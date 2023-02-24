@@ -23,12 +23,17 @@
     </header>
     <main id="main">
         <div id="item-prompt-modal" class="modal  lighten-2">
-            <div class="modal-content white-text">
+            <div class="col modal-content white-text">
                 <h6><b>...</b></h6>
-                    <div class="input-field col s6 h4">
+                <div class="col s6 h4">
+                        <div class="input-field">
                         <textarea id="item-prompt-modal-text" placeholder="???" class="materialize-textarea" data-length="200"></textarea>
-                    </div>
+                        </div>
+                        <div class="input-field">
+                        <textarea id="item-prompt-modal-details" placeholder="???" class="materialize-textarea" cols=30 rows=30 data-length="2000"></textarea>
+                        </div>
                 </div>
+            </div>
             <div class="modal-footer">
                 <a id="item-prompt-modal-save" class="modal-close waves-effect waves-light btn">save</a>
                 <a id="item-prompt-modal-cancel" class="modal-close waves-effect waves-light btn">cancel</a>

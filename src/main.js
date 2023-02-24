@@ -38,6 +38,7 @@ class ItemPromptModal {
   constructor(id, dataset) {
     this.element = ItemPromptModal.subElemById(document, id);
     this.text = ItemPromptModal.subElemById(this.element, id + "-text");
+    this.details = ItemPromptModal.subElemById(this.element, id + "-details");
     this.save = ItemPromptModal.subElemById(this.element, id + "-save");
     this.itemUnderEdit = null;
     this.color = null;
@@ -53,11 +54,19 @@ class ItemPromptModal {
         this.modal.close();
       }
     };
+    this.details.onkeypress = (event) => {
+      const keyCode = event.keyCode;
+      if (keyCode === 13) {
+        this.updateItem();
+        this.modal.close();
+      }
+    };
   }
   updateToItemExtras(){}
   updateItem() {
     if (this.itemUnderEdit !== null) {
       this.itemUnderEdit.content = this.text.value;
+      this.itemUnderEdit.details = this.details.value;
       if ("start" in this.itemUnderEdit) {
         this.itemUnderEdit.start = Date.parse(
           this.itemUnderEdit.start.toString()
@@ -91,8 +100,9 @@ class ItemPromptModal {
       });
     }
   }
-  updateFromItem(item) {
+  updateFromItem(item){
     this.text.value = item.content;
+    this.details.value = item.details;
   }
   editItem(item) {
     this.itemUnderEdit = item;
@@ -104,15 +114,15 @@ class ItemPromptModal {
   }
 }
 class Card {
-  shuffle() {
-    this.draw(Math.floor(Math.random() * 22) + 1)
+  shuffle(){
+    this.draw(Math.floor(Math.random() * 22)+1)
   }
-  draw(num) {
+  draw(num){
     this.num = num
     this.elem.src = this.root + this.num + ".svg"
   }
-  constructor(elem, num = 1) {
-    this.root = "/images/tarot/"
+  constructor(elem, num = 1){
+    this.root = "images/tarot/"
     this.elem = elem
     this.num = num
     this.elem.addEventListener("click", () => {
@@ -125,26 +135,17 @@ class GroupPromptModal extends ItemPromptModal {
   constructor(id, dataset) {
     super(id, dataset);
     this.card = new Card(ItemPromptModal.subElemById(this.element, id + "-svg"));
-    this.details = ItemPromptModal.subElemById(this.element, id + "-details");
     this.del = ItemPromptModal.subElemById(this.element, id + "-del");
     this.del.addEventListener("click", () => {
       this.dataset.remove(this.itemUnderEdit.id);
     });
-    this.details.onkeypress = (event) => {
-      const keyCode = event.keyCode;
-      if (keyCode === 13) {
-        this.updateItem();
-        this.modal.close();
-      }
-    };
   }
-  updateFromItem(item) {
+  updateFromItem(item){
     this.text.value = item.content;
     this.details.value = item.details;
     this.card.draw(item.card);
   }
-  updateToItemExtras(item) {
-    this.itemUnderEdit.details = this.details.value;
+  updateToItemExtras(item){
     this.itemUnderEdit.card = this.card.num;
   }
   getModalColor() {
@@ -186,26 +187,26 @@ class TimelineWrapper {
       },
       format: {
         minorLabels: {
-          millisecond: "SSS",
-          second: "s",
-          minute: "HH:mm",
-          hour: "HH:mm",
-          weekday: "[Day] D",
-          day: "[Day] D",
-          week: "w",
-          month: "[Month] M",
-          year: "[Year] YY",
+          millisecond: "",
+          second: "",
+          minute: "",
+          hour: "",
+          weekday: "",
+          day: "",
+          week: "[Ch] M [Sc] w",
+          month: "[Ch] M",
+          year: "[Book] YY",
         },
         majorLabels: {
-          millisecond: "HH:mm:ss",
-          second: "D MMMM HH:mm",
-          minute: "ddd D MMMM",
-          hour: "ddd D MMMM",
-          weekday: "[Month] M [Year] YY",
-          day: "[Month] M [Year] YY",
-          week: "[Month] M [Year] YY",
-          month: "[Year] YY",
-          year: "",
+          millisecond: "",
+          second: "",
+          minute: "",
+          hour: "",
+          weekday: "",
+          day: "[Chapter] M [Scene] w",
+          week: "[Chapter] M [Scene] w",
+          month: "[Book] YY [Chapter] M",
+          year: "[Book] YY",
         },
       },
       template: function(item, element, data) {
@@ -261,11 +262,12 @@ class TimelineWrapper {
   }
   saveData() {
     let itemdata = this.items.get({
-      fields: ["id", "start", "content", "group"], // output the specified fields only
+      fields: ["id", "start", "content", "details", "group"], // output the specified fields only
       type: {
         start: "Date", // convert the date fields to Date objects
         content: "String",
         group: "int", // convert the group fields to Strings
+        details: "String",
       },
     });
     let groupdata = this.groups.get({
@@ -351,9 +353,7 @@ document.getElementById("footer-btn-save").addEventListener("click", () => {
   let data = timelineWrapper.saveData();
   localStorage.setItem("itemdata", JSON.stringify(data.items));
   localStorage.setItem("groupdata", JSON.stringify(data.groups));
-  M.toast({
-    html: "Data saved!"
-  });
+  M.toast({ html: "Data saved!" });
 });
 document.getElementById("footer-btn-load").addEventListener("click", () => {
   let itemdata = JSON.parse(localStorage.getItem("itemdata")).filter(
