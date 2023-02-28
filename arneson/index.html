@@ -1,78 +1,80 @@
 <!DOCTYPE html>
 <html>
-<head>
     <head>
-        <!--Import Google Icon Font-->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <!-- Compiled and minified CSS see https://materializecss.com -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <!-- Compiled and minified JavaScript see https://materializecss.com -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <script type="text/javascript" src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
-        <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
-        <script src="src/main.js" defer></script>
-        <link rel=stylesheet href="src/main.css">
-    </head>
-<body>
-    <header>
-        <nav>
-            <div class="nav nav-wrapper">
-              <a href="#!" class="brand-logo right"><i class="large material-icons">wallpaper</i>Arneson</a>
-            </div>
-        </nav>    
-    </header>
-    <main id="main">
-        <div id="item-prompt-modal" class="modal  lighten-2">
-            <div class="col modal-content white-text">
-                <h6><b>...</b></h6>
-                <div class="col s6 h4">
-                        <div class="input-field">
-                        <textarea id="item-prompt-modal-text" placeholder="???" class="materialize-textarea" data-length="200"></textarea>
-                        </div>
-                        <div class="input-field">
-                        <textarea id="item-prompt-modal-details" placeholder="???" class="materialize-textarea" cols=30 rows=30 data-length="2000"></textarea>
-                        </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a id="item-prompt-modal-save" class="modal-close waves-effect waves-light btn">save</a>
-                <a id="item-prompt-modal-cancel" class="modal-close waves-effect waves-light btn">cancel</a>
-            </div>
-        </div>
-        <div id="group-prompt-modal" class="modal  lighten-2">
-            <div class="modal-content white-text">
-                    <h6><b>...</b></h6>
-                    <div class="input-field col s6 h4">
-                        <div class="row">
-                            <img id="group-prompt-modal-svg" src="./images/tarot/1.svg" class = "col s3 left">
-                            <textarea id="group-prompt-modal-text" placeholder="???" class="col s4 left materialize-textarea" data-length="200"></textarea>
-                            <textarea id="group-prompt-modal-details" placeholder="???" class="col s6 left materialize-textarea" data-length="200"></textarea>
+        <head>
+            <!--Import Google Icon Font-->
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <!-- Compiled and minified CSS see https://materializecss.com -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+            <!-- Compiled and minified JavaScript see https://materializecss.com -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            <script type="text/javascript" src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
+            <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+            <link rel=stylesheet href="src/main.css">
+        </head>
+        <body>
+            </script>
+            <header>
+                <nav>
+                    <div class="nav nav-wrapper">
+                        <a href="#!" class="brand-logo right"><i class="large material-icons">wallpaper</i>Arneson</a>
+                    </div>
+                </nav>
+            </header>
+            <main id="main">
+                <div id="item-prompt-modal" class="modal  lighten-2">
+                    <div class="col modal-content white-text">
+                        <h6><b>...</b></h6>
+                        <div class="col s6 h4">
+                            <div class="input-field">
+                                <textarea id="item-prompt-modal-text" placeholder="???" class="materialize-textarea" data-length="200"></textarea>
+                            </div>
+                            <div class="input-field">
+                                <textarea id="item-prompt-modal-details" placeholder="???" class="materialize-textarea" cols=30 rows=30 data-length="2000"></textarea>
+                            </div>
                         </div>
                     </div>
-            </div>
-            <div class="modal-footer">
-                <a id="group-prompt-modal-del" class="modal-close waves-effect waves-light btn"><i class="material-icons">delete</i></a>
-                <a id="group-prompt-modal-save" class="modal-close waves-effect waves-light btn">save</a>
-                <a id="group-prompt-modal-cancel" class="modal-close waves-effect waves-light btn">cancel</a>
-            </div>
-        </div>
-        <div class="spacer" height="100"></div>
-        <div id="visualization"></div>
-        <div id="buttons" class="row left">
-            <div class="col s3"><a id="edit-btn-char" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">person_add</i></a></div>
-            <div class="col s3"><a id="edit-btn-reset" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">cached</i></a></div>            
-            <div class="col s3"><a id="edit-btn-zoom-in" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">zoom_in</i></a></div>
-            <div class="col s3"><a id="edit-btn-zoom-out" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">zoom_out</i></a>                </div>
-            <div class="col s3"><a id="edit-btn-clear" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">delete</i></a></div>
-        </div>
-    </main>
-    <footer class="page-footer white"></footer>
+                    <div class="modal-footer">
+                        <a id="item-prompt-modal-save" class="modal-close waves-effect waves-light btn">save</a>
+                        <a id="item-prompt-modal-cancel" class="modal-close waves-effect waves-light btn">cancel</a>
+                    </div>
+                </div>
+                <div id="group-prompt-modal" class="modal  lighten-2">
+                    <div class="modal-content white-text">
+                        <h6><b>...</b></h6>
+                        <div class="input-field col s6 h4">
+                            <div class="row">
+                                <img id="group-prompt-modal-svg" src="./images/tarot/1.svg" class = "col s3 left">
+                                <textarea id="group-prompt-modal-text" placeholder="???" class="col s4 left materialize-textarea" data-length="200"></textarea>
+                                <textarea id="group-prompt-modal-details" placeholder="???" class="col s6 left materialize-textarea" data-length="200"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a id="group-prompt-modal-del" class="modal-close waves-effect waves-light btn"><i class="material-icons">delete</i></a>
+                        <a id="group-prompt-modal-save" class="modal-close waves-effect waves-light btn">save</a>
+                        <a id="group-prompt-modal-cancel" class="modal-close waves-effect waves-light btn">cancel</a>
+                    </div>
+                </div>
+                <div class="spacer" height="100"></div>
+                <div id="visualization"></div>
+                <div id="buttons" class="row left">
+                    <div class="col s3"><a id="edit-btn-char" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">person_add</i></a></div>
+                    <div class="col s3"><a id="edit-btn-reset" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">cached</i></a></div>
+                    <div class="col s3"><a id="edit-btn-zoom-in" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">zoom_in</i></a></div>
+                    <div class="col s3"><a id="edit-btn-zoom-out" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">zoom_out</i></a>                </div>
+                    <div class="col s3"><a id="edit-btn-clear" class="btn-floating btn-large waves-effect waves-light red left"><i class="material-icons">delete</i></a></div>
+                </div>
+            </main>
+        <footer class="page-footer white"></footer>
         <div class="row left">
             <a id="footer-btn-save" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">save</i></a>
             <a id="footer-btn-load" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">input</i></a>
             <a id="footer-btn-download" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">download_for_offline</i></a>
-            <a id="footer-btn-download" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">arrow_circle_left</i></a>        
+            <a id="footer-btn-download" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">arrow_circle_left</i></a>
         </div>
     </div>
+    <script type="module" src="/src/main.js" defer></script>
+</body>
 </body>
 </html>

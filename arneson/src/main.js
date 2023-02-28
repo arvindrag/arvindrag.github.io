@@ -1,3 +1,7 @@
+import {
+  getWolfs
+} from "./firebase.js"
+
 // ---------------------------
 // Global constants
 // ---------------------------
@@ -26,6 +30,8 @@ const lookupColorArray = [
 // Logic wrapping classes
 // ---------------------------
 
+const querySnapshot = getWolfs();
+console.log(querySnapshot)
 
 class ItemPromptModal {
   static subElemById(element, id) {
@@ -62,7 +68,7 @@ class ItemPromptModal {
       }
     };
   }
-  updateToItemExtras(){}
+  updateToItemExtras() {}
   updateItem() {
     if (this.itemUnderEdit !== null) {
       this.itemUnderEdit.content = this.text.value;
@@ -100,7 +106,7 @@ class ItemPromptModal {
       });
     }
   }
-  updateFromItem(item){
+  updateFromItem(item) {
     this.text.value = item.content;
     this.details.value = item.details;
   }
@@ -114,14 +120,14 @@ class ItemPromptModal {
   }
 }
 class Card {
-  shuffle(){
-    this.draw(Math.floor(Math.random() * 22)+1)
+  shuffle() {
+    this.draw(Math.floor(Math.random() * 22) + 1)
   }
-  draw(num){
+  draw(num) {
     this.num = num
     this.elem.src = this.root + this.num + ".svg"
   }
-  constructor(elem, num = 1){
+  constructor(elem, num = 1) {
     this.root = "images/tarot/"
     this.elem = elem
     this.num = num
@@ -140,12 +146,12 @@ class GroupPromptModal extends ItemPromptModal {
       this.dataset.remove(this.itemUnderEdit.id);
     });
   }
-  updateFromItem(item){
+  updateFromItem(item) {
     this.text.value = item.content;
     this.details.value = item.details;
     this.card.draw(item.card);
   }
-  updateToItemExtras(item){
+  updateToItemExtras(item) {
     this.itemUnderEdit.card = this.card.num;
   }
   getModalColor() {
@@ -353,7 +359,9 @@ document.getElementById("footer-btn-save").addEventListener("click", () => {
   let data = timelineWrapper.saveData();
   localStorage.setItem("itemdata", JSON.stringify(data.items));
   localStorage.setItem("groupdata", JSON.stringify(data.groups));
-  M.toast({ html: "Data saved!" });
+  M.toast({
+    html: "Data saved!"
+  });
 });
 document.getElementById("footer-btn-load").addEventListener("click", () => {
   let itemdata = JSON.parse(localStorage.getItem("itemdata")).filter(
