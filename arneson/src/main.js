@@ -1,5 +1,7 @@
 import {
-  getWolfs
+  readAts,
+  readData,
+  writeData
 } from "./firebase.js"
 
 // ---------------------------
@@ -29,9 +31,6 @@ const lookupColorArray = [
 // ---------------------------
 // Logic wrapping classes
 // ---------------------------
-
-const querySnapshot = getWolfs();
-console.log(querySnapshot)
 
 class ItemPromptModal {
   static subElemById(element, id) {
@@ -128,7 +127,7 @@ class Card {
     this.elem.src = this.root + this.num + ".svg"
   }
   constructor(elem, num = 1) {
-    this.root = "images/tarot/"
+    this.root = "/arneson/images/tarot/"
     this.elem = elem
     this.num = num
     this.elem.addEventListener("click", () => {
@@ -167,6 +166,7 @@ class TimelineWrapper {
   constructor() {
     this.groups = new vis.DataSet();
     this.items = new vis.DataSet();
+    this.items.options = {}
     this.itemModal = new ItemPromptModal("item-prompt-modal", this.items);
     this.groupModal = new GroupPromptModal("group-prompt-modal", this.groups);
     let container = document.getElementById("visualization");
@@ -176,6 +176,15 @@ class TimelineWrapper {
       zoomable: false,
       horizontalScroll: true,
       snap: null,
+      onAdd: function(item, callback) {
+        item.content = "???"
+        item.details = "???"
+        callback(item)
+      },
+      onAddGroup: function(group, callback) {
+        group.details = "???"
+        callback(group)
+      },
       groupTemplate: function(grp) {
         let elem = document.createElement("a");
         "waves-effect waves-light lighten-2 btn".split(' ').forEach(
@@ -228,7 +237,7 @@ class TimelineWrapper {
       this.groups,
       this.options
     );
-    this.timeline.on("doubleClick", (e) => {
+    this.timeline.on("click", (e) => {
       switch (e.what) {
         case "item":
           if (e.item !== null) {
@@ -239,18 +248,18 @@ class TimelineWrapper {
         case "group-label":
           if (e.group !== null) {
             let group = this.groups.get(e.group);
-            if (this.state == 0) {
-              M.toast({
-                html: "Viewing " + group.content + "!"
-              });
-              this.groups.forEach((group_i) => {
-                group_i.visible = (group_i.id == group.id)
-                this.groups.update(group_i);
-              })
-              this.state = 1
-            } else {
-              this.groupModal.editItem(group);
-            }
+            this.groupModal.editItem(group);
+            // if (this.state == 0) {
+            //   M.toast({
+            //     html: "Viewing " + group.content + "!"
+            //   });
+            //   this.groups.forEach((group_i) => {
+            //     group_i.visible = (group_i.id == group.id)
+            //     this.groups.update(group_i);
+            //   })
+            //   this.state = 1
+            // } else {
+            // }
           }
           default:
       }
@@ -261,7 +270,11 @@ class TimelineWrapper {
     this.items.clear();
   }
   loadData(data) {
+    console.log(data)
     this.items.clear();
+    data.items.forEach((i) => {
+      i.start = new Date(i.start)
+    })
     this.items.add(data.items);
     this.groups.clear();
     this.groups.add(data.groups);
@@ -276,6 +289,10 @@ class TimelineWrapper {
         details: "String",
       },
     });
+    console.log(itemdata)
+    itemdata.forEach((i) => {
+      i.start = (new Date(i.start)).getTime()
+    })
     let groupdata = this.groups.get({
       fields: ["id", "content", "details", "card", "order"], // output the specified fields only
       type: {
@@ -357,27 +374,41 @@ document.getElementById("edit-btn-reset").addEventListener("click", () => {
 })
 document.getElementById("footer-btn-save").addEventListener("click", () => {
   let data = timelineWrapper.saveData();
-  localStorage.setItem("itemdata", JSON.stringify(data.items));
-  localStorage.setItem("groupdata", JSON.stringify(data.groups));
+  writeData(data)
   M.toast({
     html: "Data saved!"
   });
 });
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.dropdown-trigger');
+  var instances = M.Dropdown.init(elems, {});
+  console.log(instances)
+});
 document.getElementById("footer-btn-load").addEventListener("click", () => {
-  let itemdata = JSON.parse(localStorage.getItem("itemdata")).filter(
-    (d) => d.id !== null && d.start !== null
-  );
-  let groupdata = JSON.parse(localStorage.getItem("groupdata")).filter(
-    (d) => d.id !== null && d.start !== null
-  );
-  timelineWrapper.loadData({
-    groups: groupdata,
-    items: itemdata
-  });
-  M.toast({
-    html: "Loading data!"
-  });
-  timelineWrapper.resetView()
+  const ddElem = document.getElementById("footer-btn-load")
+  const ddList = document.getElementById("ats-dropdown")
+  while (ddList.firstChild) {
+    ddList.removeChild(ddList.lastChild);
+  }
+  const ddInstance = M.Dropdown.getInstance(ddElem);
+  readAts().then((ats) => {
+    ats.forEach(
+      (at) => {
+        const ul = document.createElement('ul');
+        const a = document.createElement('a');
+        a.addEventListener("click", () => {
+          readData(at).then((data) => {
+            timelineWrapper.loadData(data);
+          })
+        })
+        a.href = "#!"
+        a.classList.add("white-text")
+        a.innerHTML = new Date(at).toISOString()
+        ul.appendChild(a)
+        ddList.appendChild(ul)
+      });
+    ddInstance.open()
+  })
 });
 
 document.getElementById("footer-btn-download").addEventListener("click", () => {
