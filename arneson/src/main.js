@@ -127,7 +127,7 @@ class Card {
     this.elem.src = this.root + this.num + ".svg"
   }
   constructor(elem, num = 1) {
-    this.root = "../images/tarot/"
+    this.root = "/arneson/tarot/"
     this.elem = elem
     this.num = num
     this.elem.addEventListener("click", () => {
