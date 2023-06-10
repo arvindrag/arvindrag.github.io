@@ -1,56 +1,32 @@
 body {
-    background: #FFFFFF;
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-}
-
-main {
-flex: 1 0 auto;
-}
-   
-  /* label color */
-  .input-field label {
-    color: #AAA;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+ }
+ main {
+  flex: 1 0 auto;
+ }
+ div.mainw {
+     position: relative;
+     width 100%;
+     height: 80vh;
   }
-  
-  /* label focus color */
- .input-field textarea:focus + label {
-    color: whitesmoke !important;
+ div.fillw {
+     width: 100%;
   }
-
-  /* label underline focus color */
-  .input-field textarea:focus {
-    border-bottom: 1px solid whitesmoke !important;
-    box-shadow: 0 1px 0 0 whitesmoke !important;
+ div.mcard {
+     width: 100px;
+     height: 50px;
   }
-
-
-  input, select, textarea{
-    color: white;
-}
-
-textarea:focus, input:focus {
-    color: white;
-}
-
-
-/*
-div.vis-label:nth-child(1n)  {background: #f06292;  }
-div.vis-label:nth-child(2n)  {background: #ba68c8;  }
-div.vis-label:nth-child(3n)  {background: #9575cd;  }
-div.vis-label:nth-child(4n)  {background: #7986cb;  }
-div.vis-label:nth-child(5n)  {background: #64b5f6;  }
-div.vis-label:nth-child(6n)  {background: #4fc3f7;  }
-div.vis-label:nth-child(7n)  {background: #4dd0e1;  }
-div.vis-label:nth-child(8n)  {background: #4db6ac;  }
-div.vis-label:nth-child(9n)   {background: #81c784;  }
-div.vis-label:nth-child(10n)  {background: #aed581;  }
-div.vis-label:nth-child(11n)  {background: #dce775;  }
-div.vis-label:nth-child(12n)  {background: #fff176;  }
-div.vis-label:nth-child(13n)  {background: #ffd54f;  }
-div.vis-label:nth-child(14n)  {background: #ffb74d;  }
-div.vis-label:nth-child(15n)  {background: #ff8a65;  }
-div.vis-label:nth-child(16n)  {background: #a1887f;  }
-div.vis-label:nth-child(17n)  {background: #e0e0e0;  }
-*/
+ div.myscroll {
+     height: 60px;
+     width: 100%;
+     overflow: auto;
+     white-space: nowrap;
+ }
+ .myscroll::-webkit-scrollbar {
+   display: none;
+ }
+ .no-uppercase {
+      text-transform: unset !important;
+ }
