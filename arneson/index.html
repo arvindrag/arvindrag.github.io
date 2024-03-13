@@ -8,10 +8,11 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
       <!-- Compiled and minified JavaScript see https://materializecss.com -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script src="src/static_html.js" defer></script>
       <script src="src/main.js" defer></script>
       <link rel=stylesheet href="src/main.css">
     </head>
-    <body>
+    <body class="grey darken-4">
       <header>
         <nav>
           <div class="nav nav-wrapper">
@@ -20,17 +21,16 @@
         </nav>
       </header>
       <main id="main">
-        <div class="container valign-wrapper green mainw col">
-          <div id="tieredchunks" class="col fillw" >
-          </div>
-        </main>
-      <footer class="page-footer white"></footer>
-      <div class="col container">
-        <div class="row">
-          <a id="footer-btn-save" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">save</i></a>
-          <a id="footer-btn-load" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">input</i></a>
-        </div>
+        <div id="cards" class="container"></div>
+      </main>
+    <footer class="page-footer grey darken-4"></footer>
+    <div class="col container">
+      <div class="row">
+        <a id="footer-btn-save" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">save</i></a>
+        <a id="footer-btn-load" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">input</i></a>
       </div>
     </div>
-  </body>
+  </div>
+  </div>
+</body>
 </html>

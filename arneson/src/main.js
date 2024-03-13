@@ -1,131 +1,136 @@
-function createAndAppendElem(parent, tag = "div", classes = [], text = '') {
-  let elem = document.createElement(tag)
-  classes.split(' ').forEach((c) => elem.classList.add(c))
-  elem.textContent = text
-  parent.appendChild(elem)
-  return elem
+class Card {
+  constructor(parent, text) {
+    this.parent = parent;
+    this.elem = CARD.genElementAndAttach(this);
+    this.elem.card = this;
+    this.setText(text);
+    this.cardElem.addEventListener("click", () => {
+      this.setFocus();
+    });
+    this.cardElem.addEventListener("dblclick", () => {
+      this.edit();
+    });
+  }
+  static genAppend(parent, text) {
+    const card = new Card(parent, text);
+    parent.elem.appendChild(card.elem);
+    card.setFocus();
+    return card;
+  }
+  static genAfter(after, parent, text) {
+    const card = new Card(parent, text);
+    after.after(card.elem);
+    card.setFocus();
+    return card;
+  }
+  setText(text) {
+    this.text.innerHTML = text;
+  }
+  unFocus() {
+    if (this.cardElem.classList.contains("purple")) {
+      this.cardElem.classList.remove("purple");
+    }
+    if (!this.cardElem.classList.contains("red")) {
+      this.cardElem.classList.add("red");
+    }
+  }
+  setFocus() {
+    if (this.parent.curFocus != null) {
+      this.parent.curFocus.unFocus();
+    }
+    this.parent.curFocus = this;
+    if (this.cardElem.classList.contains("red")) {
+      this.cardElem.classList.remove("red");
+    }
+    if (!this.cardElem.classList.contains("purple")) {
+      this.cardElem.classList.add("purple");
+    }
+  }
+  focusNext() {
+    if (this.elem.nextSibling != null && "card" in this.elem.nextSibling) {
+      this.elem.nextSibling.card.setFocus();
+    }
+  }
+  focusPrevious() {
+    if (this.elem.previousSibling && "card" in this.elem.previousSibling) {
+      this.elem.previousSibling.card.setFocus();
+    }
+  }
+  edit() {
+    this.parent.editModal.openWith(this.text);
+  }
 }
-
-class E {
-  static elem(parent, tag = "div", classes = [], text = '') {
-      let elem = document.createElement(tag)
-      classes.split(' ').forEach((c) => elem.classList.add(c))
-      elem.textContent = text
-      parent.appendChild(elem)
-      return elem
+class EditModal {
+  constructor(after) {
+    this.elem = EDIT_MODAL.genElementAndAttach(this);
+    after.after(this.elem);
+    this.instance = M.Modal.init(this.elem);
+    this.textElemRef = null;
+    this.saveBtn.addEventListener("click", () => this.doSave());
   }
-  static div(parent, classes = [], text = '') {
-      return E.elem(parent, "div", classes, text)
+  doSave() {
+    if (!this.textarea.value == "") {
+      this.textElemRef.innerHTML = this.textarea.value;
+    }
+    this.textElemRef = null;
   }
-  static a(parent, classes = [], text = '') {
-      return E.elem(parent, "a", classes, text)
+  openWith(textElemRef) {
+    this.textElemRef = textElemRef;
+    this.textarea.value = textElemRef.innerHTML
+    this.instance.open();
+    this.textarea.focus();
+    this.textarea.select();
   }
-  constructor(color = "red") {
-      this.color = " "+"color"+" "
-  }
-
 }
-
-class Chunk {
-  constructor(set_elem, text = 'Something') {
-      this.set_elem = set_elem
-      this.text = text
-      this.elem = createAndAppendElem(this.set_elem, "div", "btn no-uppercase btn-large waves-effect waves-light red lighten-2")
-      let row1 = createAndAppendElem(this.elem, "div", "row")
-      this.texts = createAndAppendElem(row1, "div", "col")
-      this.input = createAndAppendElem(this.texts, "input", "hide white-text")
-      this.label = createAndAppendElem(this.texts, "div", "row")
-      this.label.innerHTML = this.text
-      this.buttons = createAndAppendElem(row1, "div", "col hide")
-      this.addb = createAndAppendElem(this.buttons, "a", "btn-floating waves-effect waves-light red tiny")
-      createAndAppendElem(this.addb, "i", "material-icons tiny", "add")
-      this.delb = createAndAppendElem(this.buttons, "a", "btn-floating waves-effect waves-light red tiny")
-      createAndAppendElem(this.delb, "i", "material-icons tiny", "delete")
-      this.left = createAndAppendElem(this.buttons, "a", "btn-floating waves-effect waves-light red tiny")
-      createAndAppendElem(this.left, "i", "material-icons tiny", "chevron_left")
-      this.right = createAndAppendElem(this.buttons, "a", "btn-floating waves-effect waves-light red tiny")
-      createAndAppendElem(this.right, "i", "material-icons tiny", "chevron_right")
-
-      this.elem.addEventListener("click", () => {
-          this.startEdit()
-      })
-
-      document.addEventListener('mouseup', (e) => {
-          if (!this.elem.contains(e.target)) {
-              this.endEdit()
-          }
-      });
-
-      this.addb.addEventListener("click", () => {
-          let chunk = new Chunk(this.elem, "And then.. ")
-          this.elem.after(chunk.elem)
-          console.log()
-      })
-      
-      this.left.addEventListener("click", () => {
-          if(this.elem.previousSibling !== null) {
-              this.elem.previousSibling.before(this.elem)
-          }
-      })
-      this.right.addEventListener("click", () => {
-          if(this.elem.nextSibling !== null) {
-              this.elem.before(this.elem.nextSibling)
-          }
-      })        
-
-      this.edit = false
+class CardsSet {
+  constructor(elem_id) {
+    this.elem = document.querySelector("#" + elem_id);
+    this.curFocus = null;
+    this.initKeyMap();
+    this.editModal = new EditModal(this.elem);
   }
-  startEdit() {
-      if (!this.edit) {
-          this.input.value = this.label.innerHTML
-          this.input.classList.toggle("hide");
-          this.label.classList.toggle("hide");
-          this.buttons.classList.toggle("hide");
-          this.edit = !this.edit
-          this.input.focus();
-          this.input.select();
+  initKeyMap() {
+    const quietKeys = new Set([
+      "ArrowDown",
+      "ArrowUp",
+      "ArrowLeft",
+      "ArrowRight",
+      "Enter",
+    ]);
+    document.addEventListener("keyup", (e) => {
+      if (this.editModal.instance.isOpen) {
+        if (e.key == "Enter") {
+          this.editModal.doSave();
+          this.editModal.instance.close();
+          return;
+        }
+      } else {
+        if (e.key == "ArrowUp") {
+          this.curFocus.focusPrevious();
+          return;
+        }
+        if (e.key == "ArrowDown") {
+          this.curFocus.focusNext();
+          return;
+        }
+        if (e.key == "Enter") {
+          this.curFocus.edit();
+          return;
+        }
+        if (e.key == "n") {
+          M.toast({ html: "<b>n: new</b>" });
+          const card = Card.genAfter(this.curFocus.elem, this, "And then...");
+          card.edit();
+          return;
+        }
+        M.toast({ html: "<b>" + e.key + "</b>" });
       }
-  }    
-  endEdit() {
-      if (this.edit) {
-          this.text = this.input.value
-          this.label.innerHTML = this.text
-          this.input.classList.toggle("hide");
-          this.label.classList.toggle("hide");
-          this.buttons.classList.toggle("hide");
-          this.edit = !this.edit
-      }
+    });
+  }
+  addCard(text) {
+    const card = Card.genAppend(this, text);
   }
 }
-
-class ChunkSet {
-  constructor(container_elem) {
-      this.set = []
-      this.container_elem = container_elem
-      this.elem = createAndAppendElem(this.container_elem, "div", "row yellow white-text center-align myscroll")
-      this.pos = 0
-  }
-  addChunk() {
-      let chunk = new Chunk(this.elem, "s" + this.pos)
-      this.set.splice(this.pos, 0, chunk);
-      this.pos++
-  }
-}
-
-class ChunkSetsContainer {
-  constructor(container_elem) {
-      this.sets = []
-      this.elem = container_elem
-      this.main = 0
-  }
-  addChunkSet() {
-      this.sets.push(new ChunkSet(this.elem))
-  }
-  clear() {
-      this.elem.textContent = ''
-  }
-}
-let chunkSetsContainer = new ChunkSetsContainer(document.querySelectorAll("#tieredchunks")[0]);
-chunkSetsContainer.addChunkSet()
-chunkSetsContainer.sets[0].addChunk()
-console.log(chunkSetsContainer.elem)
+cardsSet = new CardsSet("cards");
+cardsSet.addCard("Once upon a time...");
+document.append();
