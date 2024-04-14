@@ -27,26 +27,21 @@ class StaticHTML{
     return elem
   }  
 }
-const CARDS_SET = new StaticHTML("div", `<div class="container col"></div>`)
-const CARD = new StaticHTML("div",`<div class="row">
-  <div class="col s12 m6">
+const CARDS_SET = new StaticHTML("div", `<div class="cardsset col s3"></div>`)
+const CARD = new StaticHTML("div",
+`<div class="row s12">
     <div class="card waves-effect waves-light red lighten-2 ref_cardElem">
       <div class="card-content white-text">
         <p class="ref_text white-text"></p>
       </div>
     </div>
+</div>`)
+const ACTIVE_TAGS = new StaticHTML("div",
+`<div class="card grey darken-3">
+  <div class="card-content white-text">
+    <div class="ref_tags white-text col"></div>
   </div>
 </div>`)
-const ACTIVE_TAGS = new StaticHTML("div",`<div class="card grey darken-3">
-<div class="card-content white-text">
-<div class="ref_tags white-text col"></div>
-</div>
-</div>`)
-// const ACTIVE_TAGS = new StaticHTML("div",`<div class="card waves-effect waves-light red lighten-2 ref_cardElem">
-//       <div class="purple lighten-3 card-content white-text">
-//         <h6 class="ref_tags white-text">LaLaLa</h6>
-//       </div>
-//     </div>`)
 const EDIT_TEXT_MODAL = new StaticHTML("div",
 `<div class="modal purple lighten-2 white-text">
   <div class="modal-content">

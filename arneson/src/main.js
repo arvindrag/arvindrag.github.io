@@ -104,7 +104,6 @@ class EditTagsModal {
 class EditTextModal {
   constructor(parent) {
     this.elem = EDIT_TEXT_MODAL.genElementAndAttachAppend(parent, this);
-    // after.after(this.elem);
     this.instance = M.Modal.init(this.elem);
     this.textElemRef = null;
     this.saveBtn.addEventListener("click", () => this.doSave());
@@ -124,10 +123,12 @@ class EditTextModal {
   }
 }
 class CardsSet {
-  constructor(parent_elem) {
+  constructor(tree, parent_elem) {
+    this.tree = tree
     this.elem = CARDS_SET.genElementAndAttach();
     this.elem.cardsSet = this;
     this.curFocus = null;
+    this.child = null
     this.editTextModal = new EditTextModal(parent_elem);
     this.editTagsModal = new EditTagsModal(parent_elem);
     const active_tags_div = document.querySelector("#active_tags");
@@ -135,6 +136,15 @@ class CardsSet {
       active_tags_div,
       this
     );
+  }
+  focus(){
+    curFocus
+  }
+  unFocus(){
+    this.curFocus.child.hide()
+  }
+  hide(){
+    this.elem.classList.add("hide")
   }
   keyMap(e) {
     if (e.key == "Shift") {
@@ -175,7 +185,7 @@ class CardsSet {
           // this.curFocus.focusNext();
         } else {
           M.toast({ html: "<b>shift+right: subtree</b>" });
-          // this.curFocus.genAfter(this, "And then...").edit();
+          this.tree.addChildCardSetAndFocus(this.curFocus)
         }
         return;
       }
@@ -212,18 +222,29 @@ class CardsSet {
 class CardSetTree {
   constructor(elem) {
     this.elem = elem;
-    this.root = new CardsSet(this.elem);
+    this.root = new CardsSet(this, this.elem);
     this.elem.appendChild(this.root.elem);
     this.focus = this.root
     document.addEventListener("keyup", (e) => {
-      this.focus.keyMap(e);
+      this.focusKeyMap(e)
     });
+  }
+  focusKeyMap(e){
+    this.focus.keyMap(e);
+  }
+  focus(thing){
+    this.focus.unfocus()
+    this.focus = thing
+  }
+  addChildCardSetAndFocus(parentCard){
+    const child = new CardsSet(this, this.elem)
+    child.addCard("And then")
+    parentCard.child = child
+    parentCard.parent.elem.after(child.elem)
+    this.focus(child)
   }
 }
 const tree = new CardSetTree(document.querySelector("#cards"));
 tree.root.addCard("Once upon a time...");
 
-// cardsSet = new CardsSet("cards");
-// cardsSet.addCard("Once upon a time...");
-// document.append();
 
