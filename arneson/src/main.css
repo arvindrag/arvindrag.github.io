@@ -1,44 +1,47 @@
 body {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
- }
- main {
-  flex: 1 0 auto;
- }
- div.mainw {
-     position: relative;
-     width: 100%;
-     height: 80vh;
-  }
-  textarea {
-    color:#ffffffff;
- }
- div.fillw {
-     width: 100%;
-  }
- div.fillh {
-     height: 100%;
-  }  
- div.mcard {
-     width: 100px;
-     height: 50px;
-  }
-/*.btn input[type=text]:focus + label, .materialize-textarea:focus:not([readonly]) + label {
- color: #b71c1c !important;
-}*/
- div.myscroll {
+display: flex;
+min-height: 100vh;
+flex-direction: column;
+}
+main {
+flex: 1 0 auto;
+}
+div.mainw {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+}
+textarea {
+  color:#ffffffff;
+}
+div.fillw {
+    width: 100%;
+}
+div.fillh {
     height: 100%;
+}  
+div.mcard {
+    width: 100px;
+    height: 50px;
+}
+/*.btn input[type=text]:focus + label, .materialize-textarea:focus:not([readonly]) + label {
+color: #b71c1c !important;
+}*/
+div.wrap {
+  overflow-x:auto;
+}
+div.myscroll {
+  height: 100%;
 /*    overflow-x: auto;*/
 /*    overflow-y: auto;*/
-    display: flex;
+  display: flex;
 /*    flex-wrap: nowrap;*/
-    position:relative;
-/*    white-space: nowrap;/*using nowrap*/*/
- }
- .myscroll::-webkit-scrollbar {
-   display: none;
- }
- .no-uppercase {
-      text-transform: unset !important;
- }
+  position:relative;
+/*    white-space: nowrap;/*using nowrap*/
+}
+.myscroll::-webkit-scrollbar {
+  display: none;
+}
+.no-uppercase {
+    text-transform: unset !important;
+}

@@ -27,24 +27,45 @@ class StaticHTML{
     return elem
   }  
 }
+const CARDS_SET = new StaticHTML("div", `<div class="container col"></div>`)
 const CARD = new StaticHTML("div",`<div class="row">
   <div class="col s12 m6">
     <div class="card waves-effect waves-light red lighten-2 ref_cardElem">
       <div class="card-content white-text">
-        <p class="ref_text white-text">Goldilocks wants to make a change in her life</p>
+        <p class="ref_text white-text"></p>
       </div>
     </div>
   </div>
 </div>`)
-const EDIT_MODAL = new StaticHTML("",
+const ACTIVE_TAGS = new StaticHTML("div",`<div class="card grey darken-3">
+<div class="card-content white-text">
+<div class="ref_tags white-text col"></div>
+</div>
+</div>`)
+// const ACTIVE_TAGS = new StaticHTML("div",`<div class="card waves-effect waves-light red lighten-2 ref_cardElem">
+//       <div class="purple lighten-3 card-content white-text">
+//         <h6 class="ref_tags white-text">LaLaLa</h6>
+//       </div>
+//     </div>`)
+const EDIT_TEXT_MODAL = new StaticHTML("div",
 `<div class="modal purple lighten-2 white-text">
   <div class="modal-content">
-    <h4>And then...</h4>
-    <textarea id="textarea1" class="materialize-textarea ref_textarea"></textarea>
+    <h6>And then...</h6>
+    <textarea id="textarea" class="materialize-textarea ref_textarea"></textarea>
   </div>
   <div class="modal-footer">
     <a href="#!" class="modal-close waves-effect waves-red btn-flat ref_cancelBtn">cancel</a>
     <a href="#!" class="modal-close waves-effect waves-red btn-flat ref_saveBtn">save</a>
   </div>
-</div>`
-)
+</div>`)
+const EDIT_TAGS_MODAL = new StaticHTML("div",
+`<div class="modal purple lighten-2 white-text">
+  <div class="modal-content">
+    <h6>#tags</h6>
+    <div class="ref_chipsElem chips chips-placeholder"></div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-red btn-flat ref_cancelBtn">cancel</a>
+    <a href="#!" class="modal-close waves-effect waves-red btn-flat ref_saveBtn">save</a>
+  </div>
+</div>`)

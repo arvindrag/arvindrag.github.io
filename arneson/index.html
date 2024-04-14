@@ -8,6 +8,8 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
       <!-- Compiled and minified JavaScript see https://materializecss.com -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+      <script src="src/storage.js" defer></script>
       <script src="src/static_html.js" defer></script>
       <script src="src/main.js" defer></script>
       <link rel=stylesheet href="src/main.css">
@@ -21,7 +23,11 @@
         </nav>
       </header>
       <main id="main">
-        <div id="cards" class="container"></div>
+        <div class="row">
+          <div id="active_tags" class="col s2 wrap"></div>
+          <div class="offset-s2 col"></div>
+          <div id="cards" class="row"></div>
+        </div>
       </main>
     <footer class="page-footer grey darken-4"></footer>
     <div class="col container">
