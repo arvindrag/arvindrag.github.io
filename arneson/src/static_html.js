@@ -6,7 +6,7 @@ class StaticHTML{
   genElement() {
     const parser = new DOMParser();
     const htmlDoc = parser.parseFromString(this.html_string, 'text/html');
-    return htmlDoc.querySelector("div")
+    return htmlDoc.querySelector(this.type_)
   }
   genElementAndAttach(attachTo) {
     const elem = this.genElement()
@@ -27,6 +27,7 @@ class StaticHTML{
     return elem
   }  
 }
+const CRUMB = new StaticHTML("a", `<a href="#!" class="breadcrumb ref_name"></a>`)
 const CARDS_SET = new StaticHTML("div", `<div class="cardsset col s3"></div>`)
 const CARD = new StaticHTML("div",
 `<div class="row s12">

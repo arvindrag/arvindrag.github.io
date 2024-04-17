@@ -27,6 +27,9 @@ class Card {
   setText(text) {
     this.text.innerHTML = text;
   }
+  getText(text) {
+    return this.text.innerHTML
+  }  
   unFocus() {
     if (this.cardElem.classList.contains("purple")) {
       this.cardElem.classList.remove("purple");
@@ -123,12 +126,13 @@ class EditTextModal {
   }
 }
 class CardsSet {
-  constructor(tree, parent_elem) {
+  constructor(tree, parent_elem, parent_card = null) {
     this.tree = tree
     this.elem = CARDS_SET.genElementAndAttach();
     this.elem.cardsSet = this;
     this.curFocus = null;
     this.child = null
+    this.parent_card = parent_card
     this.editTextModal = new EditTextModal(parent_elem);
     this.editTagsModal = new EditTagsModal(parent_elem);
     const active_tags_div = document.querySelector("#active_tags");
@@ -137,13 +141,16 @@ class CardsSet {
       this
     );
   }
+  path(){
+    if(this.parent_card == null){
+      return [" "]
+    }
+    return [...this.parent_card.parent.path(),this.parent_card.getText()]
+  }
   focus(){
-    curFocus
+    this.elem.classList.remove("hide")
   }
   unFocus(){
-    this.curFocus.child.hide()
-  }
-  hide(){
     this.elem.classList.add("hide")
   }
   keyMap(e) {
@@ -182,13 +189,24 @@ class CardsSet {
       if (e.key == "ArrowRight") {
         if (!e.shiftKey) {
           M.toast({ html: "<b>right: into</b>" });
-          // this.curFocus.focusNext();
+          if(this.curFocus.child != null){
+            this.tree.focus(this.curFocus.child)
+          }
         } else {
           M.toast({ html: "<b>shift+right: subtree</b>" });
-          this.tree.addChildCardSetAndFocus(this.curFocus)
+          if(this.curFocus.child == null){
+            this.tree.addChildCardSet(this.curFocus)
+          }
         }
         return;
       }
+      if (e.key == "ArrowLeft") {
+          M.toast({ html: "<b>right: into</b>" });
+          if(this.parent_card != null){
+            this.tree.focus(this.parent_card.parent)
+          }
+        return;
+      }      
       if (e.key == "Enter") {
         console.log("enter on nothing");
         M.toast({ html: "<b>enter: edit</b>" });
@@ -224,24 +242,40 @@ class CardSetTree {
     this.elem = elem;
     this.root = new CardsSet(this, this.elem);
     this.elem.appendChild(this.root.elem);
-    this.focus = this.root
+    this.curFocus = null
+    this.path = document.querySelector("#mycrumbs")
+    this.focus(this.root)
     document.addEventListener("keyup", (e) => {
       this.focusKeyMap(e)
     });
   }
+  setCrumbs(path){
+    this.path.textContent = ""
+    path.forEach((p)=>{
+      const crumb = {}
+      const c = CRUMB.genElementAndAttachAppend(this.path, crumb)
+      console.log(c)
+      c.innerHTML = p
+    })
+  }
   focusKeyMap(e){
-    this.focus.keyMap(e);
+    this.curFocus.keyMap(e);
   }
   focus(thing){
-    this.focus.unfocus()
-    this.focus = thing
+    if(this.curFocus != null){
+      this.curFocus.unFocus()
+    }
+    this.curFocus = thing
+    console.log(this.curFocus)
+    this.setCrumbs(this.curFocus.path())
+    this.curFocus.focus()
   }
-  addChildCardSetAndFocus(parentCard){
-    const child = new CardsSet(this, this.elem)
-    child.addCard("And then")
-    parentCard.child = child
-    parentCard.parent.elem.after(child.elem)
-    this.focus(child)
+  addChildCardSet(parent_card){
+    const childset = new CardsSet(this, this.elem, parent_card)
+    parent_card.child = childset
+    childset.addCard("And then")
+    this.elem.appendChild(childset.elem);
+    this.focus(childset)
   }
 }
 const tree = new CardSetTree(document.querySelector("#cards"));
