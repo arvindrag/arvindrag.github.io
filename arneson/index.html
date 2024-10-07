@@ -1,51 +1,53 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+
   <head>
-    <head>
-      <!--Import Google Icon Font-->
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!-- Compiled and minified CSS see https://materializecss.com -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-      <!-- Compiled and minified JavaScript see https://materializecss.com -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-      <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
-      <script src="src/storage.js" defer></script>
-      <script src="src/static_html.js" defer></script>
-      <script src="src/main.js" defer></script>
-      <link rel=stylesheet href="src/main.css">
-    </head>
-    <body class="grey darken-4">
-      <header>
-        <nav>
-          <div class="nav nav-wrapper">
-            <a href="#!" class="brand-logo right"><i class="large material-icons">wallpaper</i>Arneson</a>
-          </div>
-        </nav>
-        <nav>
-          <div id="mycrumbs" class="nav-wrapper grey darken-2">
-            <div class="col s12">
-<!--               <a href="#!" class="breadcrumb"> </a>
-              <a href="#!" class="breadcrumb">Second</a>
-              <a href="#!" class="breadcrumb">Third</a>
-              <a href="#!" class="breadcrumb">Fourth</a>               -->
-            </div>
-          </div>
-        </nav>
-      </header>
-      <main id="main">
-        <div class="row">
-          <div id="active_tags" class="col s2 wrap"></div>
-          <div id="cards" class="container row fillh"></div>
-        </div>
-      </main>
-    <footer class="page-footer grey darken-4"></footer>
-    <div class="col container">
-      <div class="row">
-        <a id="footer-btn-save" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">save</i></a>
-        <a id="footer-btn-load" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">input</i></a>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS see https://materializecss.com -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript see https://materializecss.com -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="src/static_html.js" defer></script>
+    <script src="src/main.js" defer></script>
+    <link rel=stylesheet href="src/main.css">
+  </head>
+
+<body class="grey fillw lighten-5 white-text">
+  <header>
+    <nav>
+      <div class="nav nav-wrapper">
+        <a href="#!" class="brand-logo right">
+          <i id="darkmode" class="large material-icons">settings_brightness</i>
+          <i class="large material-icons">wallpaper</i>Arneson
+        </a>
+      </div>
+    </nav>
+  </header>
+  <main id="main" class="grey container fillw lighten-4 white-text">
+    <div class="row s12">
+      <div id="tagger" class="s6 col grey lighten-3"></div>
+      <div id="graph" class="col">
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="src/graph.js" defer></script>
       </div>
     </div>
-  </div>
-</div>
-</body>
+  </main>
+
+  <body>
+    <footer class="page-footer grey lighten-4">
+      <div class="col container">
+        <div class="row">
+          <a id="footer-btn-save" class="btn-floating btn-large waves-effect waves-light red"><i
+              class="material-icons">save</i></a>
+          <a id="footer-btn-load" class="btn-floating btn-large waves-effect waves-light red"><i
+              class="material-icons">input</i></a>
+        </div>
+      </div>
+    </footer>
+    </div>
+  </body>
+
 </html>

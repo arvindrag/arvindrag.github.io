@@ -8,8 +8,15 @@ class StaticHTML{
     const htmlDoc = parser.parseFromString(this.html_string, 'text/html');
     return htmlDoc.querySelector(this.type_)
   }
+  genElementAndAppend(parent) {
+    const elem = this.genElement()
+    elem.object = elem
+    parent.appendChild(elem)
+    return elem
+  }  
   genElementAndAttach(attachTo) {
     const elem = this.genElement()
+    elem.object = attachTo
     const refs = elem.querySelectorAll("[class*='ref_']")
     refs.forEach(
       (ref) => ref.className.split(" ").forEach(
@@ -27,41 +34,27 @@ class StaticHTML{
     return elem
   }  
 }
-const CRUMB = new StaticHTML("a", `<a href="#!" class="breadcrumb ref_name"></a>`)
-const CARDS_SET = new StaticHTML("div", `<div class="cardsset col s3"></div>`)
-const CARD = new StaticHTML("div",
-`<div class="row s12">
-    <div class="card waves-effect waves-light red lighten-2 ref_cardElem">
-      <div class="card-content white-text">
-        <p class="ref_text white-text"></p>
-      </div>
-    </div>
-</div>`)
-const ACTIVE_TAGS = new StaticHTML("div",
-`<div class="card grey darken-3">
-  <div class="card-content white-text">
-    <div class="ref_tags white-text col"></div>
-  </div>
-</div>`)
-const EDIT_TEXT_MODAL = new StaticHTML("div",
-`<div class="modal purple lighten-2 white-text">
-  <div class="modal-content">
-    <h6>And then...</h6>
-    <textarea id="textarea" class="materialize-textarea ref_textarea"></textarea>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-close waves-effect waves-red btn-flat ref_cancelBtn">cancel</a>
-    <a href="#!" class="modal-close waves-effect waves-red btn-flat ref_saveBtn">save</a>
-  </div>
-</div>`)
-const EDIT_TAGS_MODAL = new StaticHTML("div",
-`<div class="modal purple lighten-2 white-text">
-  <div class="modal-content">
-    <h6>#tags</h6>
-    <div class="ref_chipsElem chips chips-placeholder"></div>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-close waves-effect waves-red btn-flat ref_cancelBtn">cancel</a>
-    <a href="#!" class="modal-close waves-effect waves-red btn-flat ref_saveBtn">save</a>
-  </div>
-</div>`)
+
+const TAGGER = new StaticHTML("div",
+  ` <div class="fillw col grey darken-3">
+      <div class="col ref_tags"></div>
+      <input class="col input-field ref_input"></input>
+    </div>`
+)
+const CHIPR = new StaticHTML("div",
+  `<div class="row">
+<div class="chip ref_chip">
+<b class="ref_text"></b>
+<i class="close material-icons">close</i>
+</div>
+</div>`
+)
+const INPUT = new StaticHTML("input",
+  `<input class="col input-field"></input>`
+)
+const TAGS = new StaticHTML("div",
+  `<div class="col"></div>`
+)
+
+
+

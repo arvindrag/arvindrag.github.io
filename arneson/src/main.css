@@ -6,42 +6,50 @@ flex-direction: column;
 main {
 flex: 1 0 auto;
 }
-div.mainw {
-    position: relative;
-    width: 100%;
-    height: 80vh;
-}
-textarea {
-  color:#ffffffff;
-}
 div.fillw {
     width: 100%;
 }
 div.fillh {
     height: 100%;
 }  
-div.mcard {
-    width: 100px;
-    height: 50px;
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling on the body */
 }
-/*.btn input[type=text]:focus + label, .materialize-textarea:focus:not([readonly]) + label {
-color: #b71c1c !important;
-}*/
-div.wrap {
-  overflow-x:auto;
+.hscroll {
+  width: 100vw;  /* Full viewport width */
+  height: 150px;
+  white-space: nowrap;  /* Prevent wrapping of child divs */
+  overflow-x: scroll;  /* Enable horizontal scrolling */
+  display: flex;  /* Align child divs in a row */
 }
-div.myscroll {
-  height: 100%;
-/*    overflow-x: auto;*/
-/*    overflow-y: auto;*/
-  display: flex;
-/*    flex-wrap: nowrap;*/
-  position:relative;
-/*    white-space: nowrap;/*using nowrap*/
+.hscroll::-webkit-scrollbar {
+  height: 4px;
 }
-.myscroll::-webkit-scrollbar {
-  display: none;
+.hscroll::-webkit-scrollbar-thumb {
+  background-color: darkgray;
+  border-radius: 4px;
+}
+.box {
+  max-width: 300px;
+  min-width: 200px;
+  overflow-x: wrap;
+  /* padding: 2px; */
+  height: 200px;
+  /* flex-shrink: 0; Prevent the div from shrinking */
 }
 .no-uppercase {
     text-transform: unset !important;
+}
+.node {
+  fill: #1f77b4;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  fill: none;
+  stroke: #999;
+  stroke-opacity: 0.6;
 }
