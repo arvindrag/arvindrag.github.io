@@ -50,7 +50,7 @@ const CHIPR = new StaticHTML("div",
 </div>`
 )
 const INPUT = new StaticHTML("input",
-  `<input class="col input-field"></input>`
+  `<input class="col white-text input-field"></input>`
 )
 const TAGS = new StaticHTML("div",
   `<div class="col"></div>`

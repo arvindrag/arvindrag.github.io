@@ -1,17 +1,17 @@
-function dark_mode_toggle() {
-  for (let i = 0; i < 10; i++) {
-    const lights = document.querySelectorAll(
-      "." + "lighten-" + i + ", ." + "darken-" + i
-    );
-    lights.forEach((n) => {
-      n.classList.toggle("lighten-" + i);
-      n.classList.toggle("darken-" + i);
-    });
-    document.querySelectorAll("input").forEach(i=>i.classList.toggle("white-text"))
-  }
-}
-darkmode = document.getElementById("darkmode");
-darkmode.addEventListener("click", dark_mode_toggle);
+// function dark_mode_toggle() {
+//   for (let i = 0; i < 10; i++) {
+//     const lights = document.querySelectorAll(
+//       "." + "lighten-" + i + ", ." + "darken-" + i
+//     );
+//     lights.forEach((n) => {
+//       n.classList.toggle("lighten-" + i);
+//       n.classList.toggle("darken-" + i);
+//     });
+//     document.querySelectorAll("input").forEach(i=>i.classList.toggle("white-text"))
+//   }
+// }
+// darkmode = document.getElementById("darkmode");
+// darkmode.addEventListener("click", dark_mode_toggle);
 
 class Crumb {
   constructor(tags, text, before) {
@@ -20,10 +20,22 @@ class Crumb {
     this.tags.container.insertBefore(this.elem, before);
     this.chip.tabIndex = 0;
     this.text.innerHTML = text;
+    this.add_node(text)
     this.keymap();
+  }
+  add_node(text){
+    console.log(">>", text)
+    addNode(text)
+    try{
+      const prevnodeid = this.elem.previousElementSibling.object.text.innerText
+      console.log("<-", prevnodeid)
+      addEdge(prevnodeid, text)
+    }catch(e){}
+    
   }
   focus() {
     this.chip.focus();
+    centerNode(this.text.innerText)
   }
   delete() {
     try {
@@ -94,7 +106,7 @@ class Tags {
         case "Enter":
           new Crumb(this, this.input.value, this.input);
           this.input.value = "";
-          // this.input.scrollIntoView({ behavior: "smooth" });
+          this.input.scrollIntoView({ behavior: "smooth" });
           this.update_to_store();
           break;
         case "Backspace":
@@ -102,10 +114,10 @@ class Tags {
             break;
           }
         case "ArrowUp":
-          try {
+          // try {
             this.input.previousElementSibling.object.focus();
-            this.input.remove();
-          } catch (error) {}
+            // this.input.remove();
+          // } catch (error) {}
           break;
         case "ArrowDown":
           try {
@@ -122,4 +134,4 @@ class Tags {
 
 t = new Tags("tagger");
 t.input.focus();
-dark_mode_toggle()
+// dark_mode_toggle()

@@ -42,14 +42,29 @@ html, body {
 .no-uppercase {
     text-transform: unset !important;
 }
-.node {
-  fill: #1f77b4;
-  stroke: #fff;
-  stroke-width: 1.5px;
+.node circle {
+  fill: lightblue;
+  stroke: steelblue;
+  stroke-width: 2px;
 }
-
+.node text {
+  font-size: 32px;
+  fill: #ffffff;
+}
 .link {
-  fill: none;
   stroke: #999;
   stroke-opacity: 0.6;
+  stroke-width: 2px;
+}
+svg {
+  position: fixed; /* Stays fixed relative to the viewport */
+  top: 80px; /* Distance from the top of the viewport */
+  right: 20px; /* Distance from the right of the viewport */
+  width: 800px;
+  height: 800px;
+  padding: 20px;
+  background-color: rgb(0, 0, 0);
+  border: 2px solid steelblue;
+  border-radius: 8px;
+  z-index: 1000; /* Ensure it stays on top */
 }

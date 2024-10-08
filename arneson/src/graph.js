@@ -1,115 +1,153 @@
-// Set up the SVG canvas dimensions
-const width = 800;
-const height = 600;
+// Basic setup
+const svg = d3.select("svg");
+const width = +svg.attr("width");
+const height = +svg.attr("height");
 
-// Create the SVG container for the graph
-const svg = d3.select("#graph")
-              .attr("width", width)
-              .attr("height", height);
+let nodes = [];
+let links = [];
 
-// Define the simulation for the force-directed layout
-const simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(d => d.id).distance(100))
-    .force("charge", d3.forceManyBody().strength(-400))
+// Simulation setup with forces
+const simulation = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d => d.id).distance(100))
+    .force("charge", d3.forceManyBody().strength(-300))
     .force("center", d3.forceCenter(width / 2, height / 2));
 
-// Initial data for nodes and links
-let nodes = [{ id: 1 }, { id: 2 }];
-let links = [{ source: 1, target: 2 }];
+// Drawing the links
+let link = svg.append("g")
+    .attr("class", "links")
+    .selectAll("line");
 
-// Create the initial links and nodes
-const link = svg.append("g")
-                .attr("class", "links")
-              .selectAll("line")
-              .data(links)
-              .enter().append("line")
-                .attr("class", "link");
+// Drawing the nodes
+let node = svg.append("g")
+    .attr("class", "nodes")
+    .selectAll("g");
 
-const node = svg.append("g")
-                .attr("class", "nodes")
-              .selectAll("circle")
-              .data(nodes)
-              .enter().append("circle")
-                .attr("class", "node")
-                .attr("r", 10)
-                .call(drag(simulation));
+// Update the graph
+function update() {
+    // Update links
+    link = link.data(links);
+    link.exit().remove();
+    link = link.enter().append("g")
+        .append("line")
+        .attr("class", "link")
+        .merge(link);
 
-// Update the simulation with the initial data
-simulation
-    .nodes(nodes)
-    .on("tick", ticked);
+    // Update nodes
+    node = node.data(nodes);
+    node.exit().remove();
 
-simulation.force("link")
-    .links(links);
+    const nodeEnter = node.enter().append("g")
+        .attr("class", "node")
+        .attr("id", d => `node-${d.id}`) 
+        .call(d3.drag()
+            .on("start", dragStarted)
+            .on("drag", dragged)
+            .on("end", dragEnded));
 
-// Dragging behavior for nodes
-function drag(simulation) {
-  return d3.drag()
-      .on("start", (event, d) => {
-          if (!event.active) simulation.alphaTarget(0.3).restart();
-          d.fx = d.x;
-          d.fy = d.y;
-      })
-      .on("drag", (event, d) => {
-          d.fx = event.x;
-          d.fy = event.y;
-      })
-      .on("end", (event, d) => {
-          if (!event.active) simulation.alphaTarget(0);
-          d.fx = null;
-          d.fy = null;
-      });
+    nodeEnter.append("circle")
+        .attr("r", 10);
+
+    nodeEnter.append("text")
+        .attr("dy", -3)
+        .text(d => d.id);
+
+    node = nodeEnter.merge(node);
+
+    simulation.nodes(nodes).on("tick", ticked);
+    simulation.force("link").links(links);
+    simulation.alpha(1).restart();
 }
 
-// Function to update the positions of nodes and links
+// Simulation tick function to update positions
 function ticked() {
-  link
-      .attr("x1", d => d.source.x)
-      .attr("y1", d => d.source.y)
-      .attr("x2", d => d.target.x)
-      .attr("y2", d => d.target.y);
+    link.attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
 
-  node
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y);
+    node.attr("transform", d => `translate(${d.x},${d.y})`);
 }
 
-// Function to add a new node and link dynamically
-function addNode() {
-  const newNode = { id: nodes.length + 1 };
-  const targetNode = nodes[Math.floor(Math.random() * nodes.length)];
-  nodes.push(newNode);
-  links.push({ source: newNode.id, target: targetNode.id });
-
-  // Update the nodes and links in the simulation
-  updateGraph();
+// Drag event handlers
+function dragStarted(event, d) {
+    if (!event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
 }
 
-// Update the graph when nodes or links are added
-function updateGraph() {
-  // Update links
-  const newLinks = svg.select(".links")
-                      .selectAll("line")
-                      .data(links);
-  newLinks.enter()
-          .append("line")
-          .attr("class", "link");
-
-  // Update nodes
-  const newNodes = svg.select(".nodes")
-                      .selectAll("circle")
-                      .data(nodes);
-  newNodes.enter()
-          .append("circle")
-          .attr("class", "node")
-          .attr("r", 10)
-          .call(drag(simulation));
-
-  // Restart the simulation with the updated data
-  simulation.nodes(nodes);
-  simulation.force("link").links(links);
-  simulation.alpha(1).restart();
+function dragged(event, d) {
+    d.fx = event.x;
+    d.fy = event.y;
 }
 
-// Add a new node every 2 seconds (for demonstration purposes)
-setInterval(addNode, 2000);
+function dragEnded(event, d) {
+    if (!event.active) simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+}
+
+// Function to add a new node
+function addNode(id) {
+    nodes.push({ id: id });
+    update();
+}
+
+// Function to add a new edge (link)
+function addEdge(sourceId, targetId) {
+    const sourceNode = nodes.find(n => n.id === sourceId);
+    const targetNode = nodes.find(n => n.id === targetId);
+
+    if (sourceNode && targetNode) {
+        links.push({ source: sourceNode, target: targetNode });
+        update();
+    } else {
+        console.error("Source or target node not found");
+    }
+}
+
+function getTranslationFromD3(d3Element) {
+  // Get the transform attribute from the D3 selection
+  const transform = d3Element.attr("transform");
+
+  // Use D3 string manipulation to extract the translate values
+  const translate = transform.match(/translate\(([^)]+)\)/);
+
+  if (translate) {
+      const coords = translate[1].split(",");
+      const x = parseFloat(coords[0]);
+      const y = parseFloat(coords[1]);
+      return { x, y };
+  }
+
+  return { x: 0, y: 0 };  // Default if no translation is found
+}
+
+
+function focusNode(id, duration = 200) {
+  // const id="Historian"
+  const nnode = d3.select(`#node-${id}`);
+  const coods = getTranslationFromD3(nnode)
+  if (!node.empty()) {
+    // const cx = coods.x;
+    // const cy = coods.y;
+
+    const currentCenter = simulation.force("center").x();  // Get current center X (assuming it’s the same for Y)
+    const currentCenterY = simulation.force("center").y();
+    
+    const interpolateX = d3.interpolate(currentCenter, coods.x);
+    const interpolateY = d3.interpolate(currentCenterY, coods.y);
+    // Update the center gradually over time
+    const startTime = Date.now();
+  
+    d3.timer(function() {
+        const elapsed = Date.now() - startTime;
+        const t = Math.min(1, elapsed / duration);
+  
+        // Update the center with interpolated values
+        simulation.force("center", d3.forceCenter(interpolateX(t), interpolateY(t)));
+  
+        if (t === 1) return true; // Stop the timer once the transition is complete
+    });
+  }
+}
+
